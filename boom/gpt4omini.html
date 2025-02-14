@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>粉末爆炸动画</title>
+    <title>粉末爆炸动画掉落</title>
     <style>
         body, html {
             margin: 0;
@@ -11,14 +11,16 @@
             height: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;  /* 父容器在顶部对齐 */
             background-color: #1e1e1e;
+            overflow: hidden;  /* 避免掉落的粒子超出页面 */
         }
 
         .explosion-container {
             position: relative;
             width: 200px;
-            height: 200px;
+            height: 100%;
+            overflow: hidden;
         }
 
         .powder {
@@ -27,7 +29,16 @@
             height: 5px;
             background-color: #fff;
             border-radius: 50%;
-            animation: explode 2s forwards;
+            animation: fall 5s forwards, explode 2s forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -10px;  /* 粉末从顶部开始 */
+            }
+            100% {
+                top: 100vh;  /* 粉末到达页面底部 */
+            }
         }
 
         @keyframes explode {
@@ -102,16 +113,23 @@
             }
         }
 
-        // 初始化粉末爆炸动画
-        createPowderParticles(200);
-
-        // 设置动画结束后清除粒子
-        setTimeout(() => {
+        // 创建新的爆炸粒子
+        function triggerExplosion() {
+            // 清除之前的粉末粒子
             const powders = document.querySelectorAll('.powder');
             powders.forEach(p => p.remove());
-        }, 2000); // 粉末动画时长
+            
+            // 生成新的爆炸粒子
+            createPowderParticles(200);
+        }
+
+        // 初始化粉末爆炸动画
+        triggerExplosion();
+
+        // 每3秒触发一次新的爆炸
+        setInterval(triggerExplosion, 3000); // 每3秒触发一次
+
     </script>
 
 </body>
 </html>
- 
