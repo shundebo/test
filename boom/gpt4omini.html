@@ -20,7 +20,8 @@
             position: relative;
             width: 300px;  /* 容器宽度 */
             height: 300px;  /* 容器高度 */
-            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
         }
 
         .powder {
@@ -103,7 +104,7 @@
                 
                 // 粉末生成位置为容器中心
                 const angle = Math.random() * 360;
-                const distance = Math.random() * 100 + 50; // 粉末的飞出距离
+                const distance = Math.random() * 150 + 100; // 粉末的飞出距离，扩大范围
                 const x = Math.cos(angle) * distance;
                 const y = Math.sin(angle) * distance;
                 powder.style.setProperty('--x', `${x}px`);
