@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>粉末爆炸动画</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1e1e1e;
+        }
+
+        .explosion-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .powder {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: explode 2s forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(2) translate(var(--x), var(--y));
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(3) translate(var(--x), var(--y));
+                opacity: 0;
+            }
+        }
+
+        .explosion-container::before {
+            content: " ";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="explosion-container" id="explosionContainer">
+        <!-- 粉末会通过 JavaScript 动态添加 -->
+    </div>
+
+    <script>
+        const container = document.getElementById('explosionContainer');
+
+        // 创建多个粉末粒子
+        function createPowderParticles(count = 100) {
+            for (let i = 0; i < count; i++) {
+                const powder = document.createElement('div');
+                powder.classList.add('powder');
+                
+                // 给每个粉末设置随机的动画效果
+                const angle = Math.random() * 360;
+                const distance = Math.random() * 100 + 50; // 粉末的飞出距离
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                powder.style.setProperty('--x', `${x}px`);
+                powder.style.setProperty('--y', `${y}px`);
+
+                container.appendChild(powder);
+            }
+        }
+
+        // 初始化粉末爆炸动画
+        createPowderParticles(200);
+
+        // 设置动画结束后清除粒子
+        setTimeout(() => {
+            const powders = document.querySelectorAll('.powder');
+            powders.forEach(p => p.remove());
+        }, 2000); // 粉末动画时长
+    </script>
+
+</body>
+</html>
+ 
