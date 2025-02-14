@@ -11,15 +11,15 @@
             height: 100%;
             display: flex;
             justify-content: center;
-            align-items: flex-start;  /* 父容器在顶部对齐 */
+            align-items: center; /* 确保容器在页面中心 */
             background-color: #1e1e1e;
             overflow: hidden;  /* 避免掉落的粒子超出页面 */
         }
 
         .explosion-container {
             position: relative;
-            width: 200px;
-            height: 100%;
+            width: 300px;  /* 容器宽度 */
+            height: 80%;  /* 容器高度占据视口的80% */
             overflow: hidden;
         }
 
@@ -37,7 +37,7 @@
                 top: -10px;  /* 粉末从顶部开始 */
             }
             100% {
-                top: 100vh;  /* 粉末到达页面底部 */
+                top: 100%;  /* 粉末到达页面底部 */
             }
         }
 
