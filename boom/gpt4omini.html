@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>粉末爆炸与沉积效果</title>
+    <title>粒子沉积效果</title>
     <style>
         body, html {
             margin: 0;
@@ -18,43 +18,42 @@
             position: relative;
         }
 
-        /* 墙壁的样式 */
+        /* 墙壁样式 */
         .wall {
             position: absolute;
             background-color: #444;
-            z-index: 1;
         }
 
         .wall-top, .wall-bottom, .wall-left, .wall-right {
             background-color: #222;
         }
 
-        /* 四面墙壁 */
+        /* 墙壁位置 */
         .wall-top {
             top: 0;
             left: 0;
             width: 100%;
-            height: 10px; /* 顶部墙壁高度 */
+            height: 20px; /* 顶部墙壁高度 */
         }
 
         .wall-bottom {
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 10px; /* 底部墙壁高度 */
+            height: 20px; /* 底部墙壁高度 */
         }
 
         .wall-left {
             top: 0;
             left: 0;
-            width: 10px;  /* 左侧墙壁宽度 */
+            width: 20px;  /* 左侧墙壁宽度 */
             height: 100%;
         }
 
         .wall-right {
             top: 0;
             right: 0;
-            width: 10px;  /* 右侧墙壁宽度 */
+            width: 20px;  /* 右侧墙壁宽度 */
             height: 100%;
         }
 
@@ -64,12 +63,12 @@
             height: 5px;
             background-color: #fff;
             border-radius: 50%;
-            animation: fall 5s forwards, explode 2s forwards;
+            animation: fall 3s forwards, explode 2s forwards;
         }
 
         @keyframes fall {
             0% {
-                top: -10px;
+                top: 0;
             }
             100% {
                 top: 100%;
@@ -106,76 +105,54 @@
         const container = document.getElementById('explosionContainer');
         const particleArray = [];
 
-        // 创建多个粉末粒子
-        function createPowderParticles(count = 200) {
+        // 创建粉末粒子
+        function createPowderParticles(count = 100) {
             for (let i = 0; i < count; i++) {
                 const powder = document.createElement('div');
                 powder.classList.add('powder');
                 
                 const angle = Math.random() * 360;
-                const distance = Math.random() * 300 + 200; // 扩大粉末的飞出距离，确保能够覆盖整个页面
+                const distance = Math.random() * 300 + 100; // 粒子随机生成扩散距离
                 const x = Math.cos(angle) * distance;
                 const y = Math.sin(angle) * distance;
                 powder.style.setProperty('--x', `${x}px`);
-                powder.style.setProperty('--y`, `${y}px`);
+                powder.style.setProperty('--y', `${y}px`);
 
                 // 粉末生成位置为容器中心
                 powder.style.left = "50%";
                 powder.style.top = "50%";
                 powder.style.transform = "translate(-50%, -50%)";
 
-                // 添加到粒子数组
-                particleArray.push({
-                    element: powder,
-                    x: x,
-                    y: y,
-                    speed: Math.random() * 3 + 1
-                });
-
-                document.body.appendChild(powder); // 粉末粒子添加到页面
+                // 粒子添加到页面
+                document.body.appendChild(powder);
             }
         }
 
-        // 让粒子下落并检测与底部碰撞
+        // 粒子动画
         function animateParticles() {
-            particleArray.forEach((particle, index) => {
-                const { element, x, y, speed } = particle;
-
-                // 更新位置
-                const currentY = parseFloat(element.style.top);
-                const newY = currentY + speed;
-
-                if (newY >= window.innerHeight - 20) {  // 粒子碰到底部
-                    element.style.top = `${window.innerHeight - 20}px`;  // 粒子停在底部
-                    element.style.left = `${parseFloat(element.style.left) + x / 5}px`;  // 沿着墙壁沉积
-                    particleArray.splice(index, 1);  // 移除不再更新的粒子
+            const powders = document.querySelectorAll('.powder');
+            powders.forEach((powder) => {
+                // 让粒子掉落并模拟沉积
+                let topPos = parseFloat(powder.style.top);
+                if (topPos >= window.innerHeight - 30) {
+                    // 粒子沉积
+                    powder.style.top = `${window.innerHeight - 30}px`;
                 } else {
-                    element.style.top = `${newY}px`;
-                    element.style.left = `${parseFloat(element.style.left) + x / 10}px`;
+                    powder.style.top = `${topPos + 5}px`;
                 }
             });
-
-            if (particleArray.length > 0) {
-                requestAnimationFrame(animateParticles);
-            }
         }
 
-        // 初始化粒子爆炸
+        // 触发爆炸
         function triggerExplosion() {
-            // 清除之前的粉末粒子
-            const powders = document.querySelectorAll('.powder');
-            powders.forEach(p => p.remove());
-            
-            // 创建新的爆炸粒子
-            createPowderParticles(200);
-            animateParticles();  // 启动动画
+            createPowderParticles(100); // 每次触发时产生100个粒子
+            animateParticles(); // 启动粒子动画
         }
 
         // 初始化爆炸效果
         triggerExplosion();
+        setInterval(triggerExplosion, 2000); // 每2秒触发一次爆炸
 
-        // 每3秒触发一次新的爆炸
-        setInterval(triggerExplosion, 3000);  // 每3秒触发一次
     </script>
 
 </body>
