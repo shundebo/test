@@ -11,15 +11,15 @@
             height: 100%;
             display: flex;
             justify-content: center;
-            align-items: center; /* 确保容器在页面中心 */
+            align-items: center;
             background-color: #1e1e1e;
-            overflow: hidden;  /* 避免掉落的粒子超出页面 */
+            overflow: hidden;
         }
 
         .explosion-container {
             position: relative;
             width: 300px;  /* 容器宽度 */
-            height: 80%;  /* 容器高度占据视口的80% */
+            height: 300px;  /* 容器高度 */
             overflow: hidden;
         }
 
@@ -34,10 +34,10 @@
 
         @keyframes fall {
             0% {
-                top: -10px;  /* 粉末从顶部开始 */
+                top: -10px;
             }
             100% {
-                top: 100%;  /* 粉末到达页面底部 */
+                top: 100%;
             }
         }
 
@@ -101,13 +101,18 @@
                 const powder = document.createElement('div');
                 powder.classList.add('powder');
                 
-                // 给每个粉末设置随机的动画效果
+                // 粉末生成位置为容器中心
                 const angle = Math.random() * 360;
                 const distance = Math.random() * 100 + 50; // 粉末的飞出距离
                 const x = Math.cos(angle) * distance;
                 const y = Math.sin(angle) * distance;
                 powder.style.setProperty('--x', `${x}px`);
                 powder.style.setProperty('--y', `${y}px`);
+
+                // 将粒子放置在容器的中心
+                powder.style.left = "50%";
+                powder.style.top = "50%";
+                powder.style.transform = "translate(-50%, -50%)";
 
                 container.appendChild(powder);
             }
