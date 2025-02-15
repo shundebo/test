@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,6 +67,7 @@
                 transform: scale(0.1) translate(0, 0);
                 opacity: 1;
             }
+
             100% {
                 transform: scale(1) translate(var(--x), var(--y));
                 opacity: 0;
@@ -73,6 +75,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="explosion-container">
         <div class="particle" style="--x: 150px; --y: -150px;"></div>
@@ -83,4 +86,5 @@
         <div class="particle" style="--x: 0px; --y: -180px;"></div>
     </div>
 </body>
+
 </html>

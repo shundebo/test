@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background: #000;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .explosion-container {
+            position: relative;
+            width: 10px;
+            height: 10px;
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: explode 1500ms infinite linear both;
+            /* 开启3D加速 */
+            transform: translate3d(0, 0, 0);
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform:
+                    translate(0, 0) scale(1) rotate(0deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform:
+                    translate(calc(var(--tx) * 1px),
+                        calc(var(--ty) * 1px)) scale(var(--end-scale)) rotate(calc(var(--rot) * 1deg));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="explosion-container" id="explosion"></div>
+
+    <script>
+        function createParticle() {
+            const container = document.getElementById('explosion');
+
+            // 创建200个粒子（可根据需要调整）
+            for (let i = 0; i < 200; i++) {
+                const particl = document.createElement('div');
+                particl.className = 'particle';
+
+                // 随机属性生成
+                const angle = Math.random() * Math.PI * 2; // 随机角度
+                const velocity = 300 + Math.random() * 500; // 随机速度
+                const tx = Math.cos(angle) * velocity; // X轴位移
+                const ty = Math.sin(angle) * velocity; // Y轴位移
+                const hue = 30 + Math.random() * 30; // 暖色调色相（30-60）
+                const rot = Math.random() * 720 - 360; // 旋转角度
+                const endScale = 0.2 + Math.random() * 1.5; // 结束尺寸
+                const animationDelay = Math.random() * 500; // 动画延迟
+
+                // 设置CSS变量
+                particl.style.cssText = `
+                    --tx: ${tx};
+                    --ty: ${ty};
+                    --rot: ${rot};
+                    --end-scale: ${endScale};
+                    background: hsl(${hue}, 100%, 50%);
+                    animation-delay: ${animationDelay}ms;
+                    box-shadow: 0 0 15px hsl(${hue}, 100%, 50%);
+                `;
+
+                container.appendChild(particl);
+            }
+        }
+
+        // 初始化粒子系统
+        createParticle();
+
+        // 添加窗口点击测试（可选）
+        window.addEventListener('click', createParticle);
+    </script>
+</body>
+
+</html>
