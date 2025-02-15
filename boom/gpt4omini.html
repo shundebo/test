@@ -3,157 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>粒子沉积效果</title>
+    <title>粉末爆炸动画</title>
     <style>
-        body, html {
+        body {
             margin: 0;
             padding: 0;
-            height: 100%;
-            width: 100%;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #1e1e1e;
-            overflow: hidden;
+            background-color: #1a1a1a;
+        }
+
+        .explosion-container {
             position: relative;
+            width: 300px;
+            height: 300px;
+            background-color: transparent;
         }
 
-        /* 墙壁样式 */
-        .wall {
+        .particle {
             position: absolute;
-            background-color: #444;
-        }
-
-        .wall-top, .wall-bottom, .wall-left, .wall-right {
-            background-color: #222;
-        }
-
-        /* 墙壁位置 */
-        .wall-top {
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 20px; /* 顶部墙壁高度 */
-        }
-
-        .wall-bottom {
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 20px; /* 底部墙壁高度 */
-        }
-
-        .wall-left {
-            top: 0;
-            left: 0;
-            width: 20px;  /* 左侧墙壁宽度 */
-            height: 100%;
-        }
-
-        .wall-right {
-            top: 0;
-            right: 0;
-            width: 20px;  /* 右侧墙壁宽度 */
-            height: 100%;
-        }
-
-        .powder {
-            position: absolute;
-            width: 5px;
-            height: 5px;
+            width: 10px;
+            height: 10px;
             background-color: #fff;
             border-radius: 50%;
-            animation: fall 3s forwards, explode 2s forwards;
+            animation: explode 1.5s infinite;
         }
 
-        @keyframes fall {
-            0% {
-                top: 0;
-            }
-            100% {
-                top: 100%;
-            }
+        .particle:nth-child(1) {
+            animation-delay: 0s;
+            animation-duration: 1.5s;
+        }
+
+        .particle:nth-child(2) {
+            animation-delay: 0.1s;
+            animation-duration: 1.7s;
+        }
+
+        .particle:nth-child(3) {
+            animation-delay: 0.2s;
+            animation-duration: 1.9s;
+        }
+
+        .particle:nth-child(4) {
+            animation-delay: 0.3s;
+            animation-duration: 2.0s;
+        }
+
+        .particle:nth-child(5) {
+            animation-delay: 0.4s;
+            animation-duration: 1.8s;
+        }
+
+        .particle:nth-child(6) {
+            animation-delay: 0.5s;
+            animation-duration: 2.2s;
         }
 
         @keyframes explode {
             0% {
-                transform: scale(1);
+                transform: scale(0.1) translate(0, 0);
                 opacity: 1;
             }
-            50% {
-                transform: scale(2) translate(var(--x), var(--y));
-                opacity: 0.6;
-            }
             100% {
-                transform: scale(3) translate(var(--x), var(--y));
+                transform: scale(1) translate(var(--x), var(--y));
                 opacity: 0;
             }
         }
     </style>
 </head>
 <body>
-
-    <!-- 墙壁 -->
-    <div class="wall wall-top"></div>
-    <div class="wall wall-bottom"></div>
-    <div class="wall wall-left"></div>
-    <div class="wall wall-right"></div>
-
-    <div class="explosion-container" id="explosionContainer"></div>
-
-    <script>
-        const container = document.getElementById('explosionContainer');
-        const particleArray = [];
-
-        // 创建粉末粒子
-        function createPowderParticles(count = 100) {
-            for (let i = 0; i < count; i++) {
-                const powder = document.createElement('div');
-                powder.classList.add('powder');
-                
-                const angle = Math.random() * 360;
-                const distance = Math.random() * 300 + 100; // 粒子随机生成扩散距离
-                const x = Math.cos(angle) * distance;
-                const y = Math.sin(angle) * distance;
-                powder.style.setProperty('--x', `${x}px`);
-                powder.style.setProperty('--y', `${y}px`);
-
-                // 粉末生成位置为容器中心
-                powder.style.left = "50%";
-                powder.style.top = "50%";
-                powder.style.transform = "translate(-50%, -50%)";
-
-                // 粒子添加到页面
-                document.body.appendChild(powder);
-            }
-        }
-
-        // 粒子动画
-        function animateParticles() {
-            const powders = document.querySelectorAll('.powder');
-            powders.forEach((powder) => {
-                // 让粒子掉落并模拟沉积
-                let topPos = parseFloat(powder.style.top);
-                if (topPos >= window.innerHeight - 30) {
-                    // 粒子沉积
-                    powder.style.top = `${window.innerHeight - 30}px`;
-                } else {
-                    powder.style.top = `${topPos + 5}px`;
-                }
-            });
-        }
-
-        // 触发爆炸
-        function triggerExplosion() {
-            createPowderParticles(100); // 每次触发时产生100个粒子
-            animateParticles(); // 启动粒子动画
-        }
-
-        // 初始化爆炸效果
-        triggerExplosion();
-        setInterval(triggerExplosion, 2000); // 每2秒触发一次爆炸
-
-    </script>
-
+    <div class="explosion-container">
+        <div class="particle" style="--x: 150px; --y: -150px;"></div>
+        <div class="particle" style="--x: 120px; --y: -120px;"></div>
+        <div class="particle" style="--x: -100px; --y: -100px;"></div>
+        <div class="particle" style="--x: 80px; --y: -80px;"></div>
+        <div class="particle" style="--x: -50px; --y: -50px;"></div>
+        <div class="particle" style="--x: 0px; --y: -180px;"></div>
+    </div>
 </body>
 </html>
